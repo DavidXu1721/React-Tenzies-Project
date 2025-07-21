@@ -3,6 +3,8 @@ import React from 'react'
 function Die(props) {
   // console.log(props)
 
+  // TODO: Add animations when die is held/unheld
+  
   return (
     <button 
       className= {`die ${props.locked? 'held': ''}`} 
