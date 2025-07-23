@@ -2,6 +2,7 @@ import React from 'react';
 import Die from './components/Die';
 import {nanoid} from 'nanoid';
 import Confetti from 'react-confetti';
+import { useEffect } from 'react';
 
 
 function App() {
@@ -12,6 +13,19 @@ function App() {
       .fill(0)
       .map(() =>({id: nanoid(), locked:false, value: Math.floor(Math.random()*6) + 1}))
   })
+
+  const [windowSize, setWindowSize] = React.useState([window.innerWidth, window.innerHeight])
+
+  useEffect(() => {
+    function updateWindowSize(){
+      console.log("window resized")
+      setWindowSize([window.innerWidth, window.innerHeight])
+    }
+
+    window.addEventListener('resize', updateWindowSize)
+
+    return (() => {window.removeEventListener('resize', updateWindowSize)})
+  }, [])
 
   const rollButton = React.useRef(null)
 
@@ -78,7 +92,7 @@ function App() {
 
   return (
     <main className="app">
-      <Confetti numberOfPieces={gameWon? 200: 0}/>
+      <Confetti width={windowSize[0]} height={windowSize[1]} numberOfPieces={gameWon? 200: 0}/>
       <div aria-live="polite" className="sr-only">
         {gameWon && <p>Congratulations! You won! Press the "New Game" button to start again.</p>}
       </div>
